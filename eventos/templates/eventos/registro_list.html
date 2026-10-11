@@ -1,0 +1,36 @@
+{% extends 'common/list_base.html' %}
+
+{% block table_head %}
+<tr>
+    <th>Evento</th>
+    <th>Participante</th>
+    <th>Matrícula</th>
+    <th>Equipo</th>
+    <th>Fecha de Registro</th>
+    <th>Acciones</th>
+</tr>
+{% endblock %}
+
+{% block table_body %}
+{% for r in registros %}
+<tr>
+    <td><strong>{{ r.evento.nombre }}</strong></td>
+    <td>{{ r.usuario.nombre|default:r.usuario.username }} {{ r.usuario.apaterno|default:"" }}</td>
+    <td>{{ r.usuario.matricula|default:"--" }}</td>
+    <td>{{ r.equipo|default:"Individual" }}</td>
+    <td><span style="font-size: 0.85rem; color: var(--text-muted);">{{ r.fecha_registro|date:"d/m/Y H:i" }}</span></td>
+    <td>
+        <div class="actions">
+            <a href="{% url 'eventos:registro_update' r.pk %}" class="btn-action btn-edit" title="Editar"><i class="fa-solid fa-pen"></i></a>
+            <a href="{% url 'eventos:registro_delete' r.pk %}" class="btn-action btn-delete" title="Eliminar"><i class="fa-solid fa-trash"></i></a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+        No se encontraron pre-registros.
+    </td>
+</tr>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'common/list_base.html' %}
+
+{% block table_head %}
+<tr>
+    <th>Código</th>
+    <th>Edificio</th>
+    <th>Capacidad</th>
+    <th>Tipo</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+</tr>
+{% endblock %}
+
+{% block table_body %}
+{% for a in aulas %}
+<tr>
+    <td><strong>{{ a.codigo }}</strong></td>
+    <td>{{ a.edificio|default:"--" }}</td>
+    <td>{{ a.capacidad|default:"--" }} alumnos</td>
+    <td><span class="badge-role">{{ a.get_tipo_display }}</span></td>
+    <td>
+        {% if a.activa %}
+        <span class="badge-status badge-active">Activa</span>
+        {% else %}
+        <span class="badge-status badge-inactive">Inactiva</span>
+        {% endif %}
+    </td>
+    <td>
+        <div class="actions">
+            <a href="{% url 'academico:aula_update' a.pk %}" class="btn-action btn-edit" title="Editar"><i class="fa-solid fa-pen"></i></a>
+            <a href="{% url 'academico:aula_delete' a.pk %}" class="btn-action btn-delete" title="Eliminar"><i class="fa-solid fa-trash"></i></a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+        No se encontraron aulas registradas.
+    </td>
+</tr>
+{% endfor %}
+{% endblock %}

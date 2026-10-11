@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title|default:"Catálogo" }} - PassID{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">{{ page_title }}</h1>
+        {% if page_subtitle %}
+        <p class="page-subtitle">{{ page_subtitle }}</p>
+        {% endif %}
+    </div>
+    {% if create_url %}
+    <a href="{{ create_url }}" class="btn-create">
+        <i class="fa-solid fa-plus"></i> {{ create_label|default:"Crear Nuevo" }}
+    </a>
+    {% endif %}
+</div>
+
+<div class="glass-card">
+    {% block search_form %}
+    <form method="get" class="search-bar">
+        <input type="text" name="q" value="{{ query|default:'' }}" class="search-input" placeholder="{{ search_placeholder|default:'Buscar...' }}">
+        <button type="submit" class="btn-search"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+    </form>
+    {% endblock %}
+
+    <div style="overflow-x: auto;">
+        <table class="table">
+            <thead>
+                {% block table_head %}{% endblock %}
+            </thead>
+            <tbody>
+                {% block table_body %}{% endblock %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if is_paginated %}
+    <div style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem;">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}" class="btn-action" style="padding: 0.5rem 1rem; border-radius: 6px;">&laquo; Anterior</a>
+        {% endif %}
+        <span style="color: var(--text-muted); align-self: center; font-size: 0.9rem;">
+            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}" class="btn-action" style="padding: 0.5rem 1rem; border-radius: 6px;">Siguiente &raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

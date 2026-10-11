@@ -1,0 +1,44 @@
+{% extends 'common/list_base.html' %}
+
+{% block table_head %}
+<tr>
+    <th>Clave</th>
+    <th>Nombre de la Asignatura</th>
+    <th>Carrera</th>
+    <th>Periodo</th>
+    <th>Hrs / Sem</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+</tr>
+{% endblock %}
+
+{% block table_body %}
+{% for m in materias %}
+<tr>
+    <td><span class="badge-perm">{{ m.clave }}</span></td>
+    <td><strong>{{ m.nombre }}</strong></td>
+    <td>{{ m.carrera.nombre|default:"Común / Tronco" }}</td>
+    <td>{{ m.periodo|default:"--" }}</td>
+    <td>{{ m.horas_semana }} hrs</td>
+    <td>
+        {% if m.activa %}
+        <span class="badge-status badge-active">Activa</span>
+        {% else %}
+        <span class="badge-status badge-inactive">Inactiva</span>
+        {% endif %}
+    </td>
+    <td>
+        <div class="actions">
+            <a href="{% url 'academico:materia_update' m.pk %}" class="btn-action btn-edit" title="Editar"><i class="fa-solid fa-pen"></i></a>
+            <a href="{% url 'academico:materia_delete' m.pk %}" class="btn-action btn-delete" title="Eliminar"><i class="fa-solid fa-trash"></i></a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+        No se encontraron materias registradas.
+    </td>
+</tr>
+{% endfor %}
+{% endblock %}

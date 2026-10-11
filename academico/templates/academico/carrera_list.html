@@ -1,0 +1,40 @@
+{% extends 'common/list_base.html' %}
+
+{% block table_head %}
+<tr>
+    <th>ID</th>
+    <th>Clave</th>
+    <th>Nombre de la Carrera</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+</tr>
+{% endblock %}
+
+{% block table_body %}
+{% for c in carreras %}
+<tr>
+    <td><code>#{{ c.id }}</code></td>
+    <td><strong>{{ c.clave }}</strong></td>
+    <td>{{ c.nombre }}</td>
+    <td>
+        {% if c.activa %}
+        <span class="badge-status badge-active">Activa</span>
+        {% else %}
+        <span class="badge-status badge-inactive">Inactiva</span>
+        {% endif %}
+    </td>
+    <td>
+        <div class="actions">
+            <a href="{% url 'academico:carrera_update' c.pk %}" class="btn-action btn-edit" title="Editar"><i class="fa-solid fa-pen"></i></a>
+            <a href="{% url 'academico:carrera_delete' c.pk %}" class="btn-action btn-delete" title="Eliminar"><i class="fa-solid fa-trash"></i></a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+        No se encontraron carreras registradas.
+    </td>
+</tr>
+{% endfor %}
+{% endblock %}
