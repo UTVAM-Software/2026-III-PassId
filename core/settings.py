@@ -18,6 +18,8 @@ DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 't')
 
 allowed_hosts_env = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1')
 ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(',') if host.strip()]
+if DEBUG and 'testserver' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('testserver')
 
 
 INSTALLED_APPS = [
@@ -27,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'autenticacion',
     'usuarios',
     'academico',
     'eventos',
@@ -49,7 +52,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -62,6 +65,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'core.wsgi.application'
+
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+]
+
+LOGIN_URL = '/auth/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/auth/login/'
 
 DATABASES = {
     'default': {

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title|default:"Eliminar Registro" }} - PassID{% endblock %}
+
+{% block content %}
+<div class="delete-container">
+    <div class="glass-card">
+        <i class="fa-solid fa-triangle-exclamation icon-warning"></i>
+        <h1 class="delete-title">{{ title|default:"¿Eliminar Registro?" }}</h1>
+        <p class="delete-desc">
+            {% block delete_message %}
+            ¿Estás seguro de que deseas eliminar <strong>"{{ object }}"</strong>?
+            Esta acción no se puede deshacer.
+            {% endblock %}
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="btn-group">
+                <a href="{{ cancel_url }}" class="btn-cancel">Cancelar</a>
+                <button type="submit" class="btn-delete-confirm">Sí, Eliminar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

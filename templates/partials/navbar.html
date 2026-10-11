@@ -1,0 +1,98 @@
+<header>
+    <nav class="navbar">
+        <a href="{% if user.is_authenticated %}{% url 'usuarios:usuario_list' %}{% else %}{% url 'autenticacion:login' %}{% endif %}" class="brand">
+            <i class="fa-solid fa-id-card"></i>
+            <span>PassID</span>
+        </a>
+
+        {% if user.is_authenticated %}
+        <div class="nav-links">
+            <!-- Menú Administración / Usuarios -->
+            {% if user.is_superuser or perms.usuario or perms.usuarios %}
+            <div class="nav-dropdown">
+                <a href="javascript:void(0)" class="nav-link">
+                    <i class="fa-solid fa-shield-halved"></i> Administración <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
+                </a>
+                <div class="nav-dropdown-menu">
+                    <a href="{% url 'usuarios:permiso_list' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-key"></i> Permisos
+                    </a>
+                    <a href="{% url 'usuarios:perfil_list' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-user-tag"></i> Perfiles / Roles
+                    </a>
+                    <a href="{% url 'usuarios:usuario_list' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-users"></i> Usuarios
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Menú Académico -->
+            {% if user.is_superuser or perms.carrera or perms.aula or perms.materia or perms.horario or perms.inscripcion or perms.academico %}
+            <div class="nav-dropdown">
+                <a href="javascript:void(0)" class="nav-link">
+                    <i class="fa-solid fa-graduation-cap"></i> Académico <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
+                </a>
+                <div class="nav-dropdown-menu">
+                    <a href="{% url 'academico:carrera_list' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-certificate"></i> Carreras
+                    </a>
+                    <a href="{% url 'academico:aula_list' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-door-open"></i> Aulas
+                    </a>
+                    <a href="{% url 'academico:materia_list' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-book"></i> Materias
+                    </a>
+                    <a href="{% url 'academico:horario_list' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-calendar-days"></i> Horarios
+                    </a>
+                    <a href="{% url 'academico:inscripcion_list' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-user-check"></i> Inscripciones
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Menú Eventos -->
+            {% if user.is_superuser or perms.evento or perms.registro or perms.asistencia or perms.eventos %}
+            <div class="nav-dropdown">
+                <a href="javascript:void(0)" class="nav-link">
+                    <i class="fa-solid fa-calendar-check"></i> Eventos <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
+                </a>
+                <div class="nav-dropdown-menu">
+                    <a href="{% url 'eventos:evento_list' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-bullhorn"></i> Catálogo de Eventos
+                    </a>
+                    <a href="{% url 'eventos:registro_list' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-clipboard-list"></i> Pre-registros
+                    </a>
+                    <a href="{% url 'eventos:asistencia_list' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-qrcode"></i> Asistencias
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Información de Usuario y Logout -->
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-left: 0.5rem;">
+                <span class="nav-user-badge" title="{{ user.email }}">
+                    <i class="fa-solid fa-circle-user"></i>
+                    {{ user.username }}
+                </span>
+                <form method="post" action="{% url 'autenticacion:logout' %}" style="display: inline; margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-logout" title="Cerrar sesión">
+                        <i class="fa-solid fa-right-from-bracket"></i> Salir
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="nav-links">
+            <a href="{% url 'autenticacion:login' %}" class="nav-link">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i> Iniciar Sesión
+            </a>
+        </div>
+        {% endif %}
+    </nav>
+</header>

@@ -3,14 +3,16 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from django.contrib import messages
+from core.mixins import PassIdPermissionMixin
 from .models import Permiso, Perfil, Usuario
 from .forms import PermisoForm, PerfilForm, UsuarioCreateForm, UsuarioUpdateForm
 
-class PermisoListView(ListView):
+class PermisoListView(PassIdPermissionMixin, ListView):
     model = Permiso
     template_name = "usuarios/permiso_list.html"
     context_object_name = "permisos"
     paginate_by = 10
+    required_permission = "usuario.view_permiso"
 
     def get_queryset(self):
         queryset = Permiso.objects.all()
@@ -30,11 +32,12 @@ class PermisoListView(ListView):
         return context
 
 
-class PermisoCreateView(CreateView):
+class PermisoCreateView(PassIdPermissionMixin, CreateView):
     model = Permiso
     form_class = PermisoForm
     template_name = "usuarios/permiso_form.html"
     success_url = reverse_lazy("usuarios:permiso_list")
+    required_permission = "usuario.add_permiso"
 
     def form_valid(self, form):
         messages.success(self.request, f"Permiso '{form.instance.codename}' creado correctamente.")
@@ -47,11 +50,12 @@ class PermisoCreateView(CreateView):
         return context
 
 
-class PermisoUpdateView(UpdateView):
+class PermisoUpdateView(PassIdPermissionMixin, UpdateView):
     model = Permiso
     form_class = PermisoForm
     template_name = "usuarios/permiso_form.html"
     success_url = reverse_lazy("usuarios:permiso_list")
+    required_permission = "usuario.change_permiso"
 
     def form_valid(self, form):
         messages.success(self.request, f"Permiso '{form.instance.codename}' actualizado correctamente.")
@@ -64,11 +68,12 @@ class PermisoUpdateView(UpdateView):
         return context
 
 
-class PermisoDeleteView(DeleteView):
+class PermisoDeleteView(PassIdPermissionMixin, DeleteView):
     model = Permiso
     template_name = "usuarios/permiso_confirm_delete.html"
     success_url = reverse_lazy("usuarios:permiso_list")
     context_object_name = "permiso"
+    required_permission = "usuario.delete_permiso"
 
     def delete(self, request, *args, **kwargs):
         permiso = self.get_object()
@@ -76,11 +81,12 @@ class PermisoDeleteView(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class PerfilListView(ListView):
+class PerfilListView(PassIdPermissionMixin, ListView):
     model = Perfil
     template_name = "usuarios/perfil_list.html"
     context_object_name = "perfiles"
     paginate_by = 10
+    required_permission = "usuario.view_perfil"
 
     def get_queryset(self):
         queryset = Perfil.objects.prefetch_related("permisos").all()
@@ -96,11 +102,12 @@ class PerfilListView(ListView):
         return context
 
 
-class PerfilCreateView(CreateView):
+class PerfilCreateView(PassIdPermissionMixin, CreateView):
     model = Perfil
     form_class = PerfilForm
     template_name = "usuarios/perfil_form.html"
     success_url = reverse_lazy("usuarios:perfil_list")
+    required_permission = "usuario.add_perfil"
 
     def form_valid(self, form):
         messages.success(self.request, f"Perfil '{form.instance.nombre}' creado correctamente.")
@@ -113,11 +120,12 @@ class PerfilCreateView(CreateView):
         return context
 
 
-class PerfilUpdateView(UpdateView):
+class PerfilUpdateView(PassIdPermissionMixin, UpdateView):
     model = Perfil
     form_class = PerfilForm
     template_name = "usuarios/perfil_form.html"
     success_url = reverse_lazy("usuarios:perfil_list")
+    required_permission = "usuario.change_perfil"
 
     def form_valid(self, form):
         messages.success(self.request, f"Perfil '{form.instance.nombre}' actualizado correctamente.")
@@ -130,11 +138,12 @@ class PerfilUpdateView(UpdateView):
         return context
 
 
-class PerfilDeleteView(DeleteView):
+class PerfilDeleteView(PassIdPermissionMixin, DeleteView):
     model = Perfil
     template_name = "usuarios/perfil_confirm_delete.html"
     success_url = reverse_lazy("usuarios:perfil_list")
     context_object_name = "perfil"
+    required_permission = "usuario.delete_perfil"
 
     def delete(self, request, *args, **kwargs):
         perfil = self.get_object()
@@ -142,11 +151,12 @@ class PerfilDeleteView(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class UsuarioListView(ListView):
+class UsuarioListView(PassIdPermissionMixin, ListView):
     model = Usuario
     template_name = "usuarios/usuario_list.html"
     context_object_name = "usuarios_list"
     paginate_by = 10
+    required_permission = "usuario.view_usuario"
 
     def get_queryset(self):
         queryset = Usuario.objects.prefetch_related("perfiles").all()
@@ -168,11 +178,12 @@ class UsuarioListView(ListView):
         return context
 
 
-class UsuarioCreateView(CreateView):
+class UsuarioCreateView(PassIdPermissionMixin, CreateView):
     model = Usuario
     form_class = UsuarioCreateForm
     template_name = "usuarios/usuario_form.html"
     success_url = reverse_lazy("usuarios:usuario_list")
+    required_permission = "usuario.add_usuario"
 
     def form_valid(self, form):
         messages.success(self.request, f"Usuario '{form.instance.username}' registrado correctamente.")
@@ -185,11 +196,12 @@ class UsuarioCreateView(CreateView):
         return context
 
 
-class UsuarioUpdateView(UpdateView):
+class UsuarioUpdateView(PassIdPermissionMixin, UpdateView):
     model = Usuario
     form_class = UsuarioUpdateForm
     template_name = "usuarios/usuario_form.html"
     success_url = reverse_lazy("usuarios:usuario_list")
+    required_permission = "usuario.change_usuario"
 
     def form_valid(self, form):
         messages.success(self.request, f"Usuario '{form.instance.username}' actualizado correctamente.")
@@ -202,11 +214,12 @@ class UsuarioUpdateView(UpdateView):
         return context
 
 
-class UsuarioDeleteView(DeleteView):
+class UsuarioDeleteView(PassIdPermissionMixin, DeleteView):
     model = Usuario
     template_name = "usuarios/usuario_confirm_delete.html"
     success_url = reverse_lazy("usuarios:usuario_list")
     context_object_name = "usuario"
+    required_permission = "usuario.delete_usuario"
 
     def delete(self, request, *args, **kwargs):
         usuario = self.get_object()

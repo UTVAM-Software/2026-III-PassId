@@ -1,0 +1,50 @@
+{% extends 'common/list_base.html' %}
+
+{% block table_head %}
+<tr>
+    <th>Nombre del Evento</th>
+    <th>Fecha y Hora</th>
+    <th>Lugar</th>
+    <th>Pre-registro</th>
+    <th>Autorregistro</th>
+    <th>Responsable</th>
+    <th>Acciones</th>
+</tr>
+{% endblock %}
+
+{% block table_body %}
+{% for e in eventos %}
+<tr>
+    <td><strong>{{ e.nombre }}</strong></td>
+    <td><i class="fa-regular fa-clock" style="color: var(--text-muted);"></i> {{ e.fecha_hora|date:"d/m/Y H:i" }}</td>
+    <td>{{ e.lugar|default:"--" }}</td>
+    <td>
+        {% if e.requiere_registro %}
+        <span class="badge-role">Requerido</span>
+        {% else %}
+        <span style="color: var(--text-muted); font-size: 0.85rem;">Libre</span>
+        {% endif %}
+    </td>
+    <td>
+        {% if e.permitir_autorregistro %}
+        <span class="badge-status badge-active">Permitido</span>
+        {% else %}
+        <span class="badge-status badge-inactive">Cerrado</span>
+        {% endif %}
+    </td>
+    <td>{{ e.responsable_interno|default:e.responsable_externo|default:"--" }}</td>
+    <td>
+        <div class="actions">
+            <a href="{% url 'eventos:evento_update' e.pk %}" class="btn-action btn-edit" title="Editar"><i class="fa-solid fa-pen"></i></a>
+            <a href="{% url 'eventos:evento_delete' e.pk %}" class="btn-action btn-delete" title="Eliminar"><i class="fa-solid fa-trash"></i></a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+        No se encontraron eventos programados.
+    </td>
+</tr>
+{% endfor %}
+{% endblock %}

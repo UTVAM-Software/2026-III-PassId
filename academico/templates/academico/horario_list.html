@@ -1,0 +1,49 @@
+{% extends 'common/list_base.html' %}
+
+{% block table_head %}
+<tr>
+    <th>Materia</th>
+    <th>Profesor</th>
+    <th>Aula</th>
+    <th>Grupo</th>
+    <th>Día y Horario</th>
+    <th>Periodo</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+</tr>
+{% endblock %}
+
+{% block table_body %}
+{% for h in horarios %}
+<tr>
+    <td><strong>{{ h.materia.nombre }}</strong> <span style="font-size: 0.8rem; color: var(--text-muted);">({{ h.materia.clave }})</span></td>
+    <td>{{ h.profesor.nombre|default:h.profesor.username }} {{ h.profesor.apaterno|default:"" }}</td>
+    <td>{{ h.aula.codigo|default:"Sin aula" }}</td>
+    <td><span class="badge-role">{{ h.grupo }}</span></td>
+    <td>
+        <strong>{{ h.get_dia_semana_display }}</strong>
+        <span style="color: var(--text-muted); font-size: 0.85rem;">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}</span>
+    </td>
+    <td>{{ h.periodo }}</td>
+    <td>
+        {% if h.activo %}
+        <span class="badge-status badge-active">Activo</span>
+        {% else %}
+        <span class="badge-status badge-inactive">Inactivo</span>
+        {% endif %}
+    </td>
+    <td>
+        <div class="actions">
+            <a href="{% url 'academico:horario_update' h.pk %}" class="btn-action btn-edit" title="Editar"><i class="fa-solid fa-pen"></i></a>
+            <a href="{% url 'academico:horario_delete' h.pk %}" class="btn-action btn-delete" title="Eliminar"><i class="fa-solid fa-trash"></i></a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+        No se encontraron horarios asignados.
+    </td>
+</tr>
+{% endfor %}
+{% endblock %}

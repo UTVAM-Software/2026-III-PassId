@@ -1,0 +1,46 @@
+{% extends 'common/list_base.html' %}
+
+{% block table_head %}
+<tr>
+    <th>Alumno / Usuario</th>
+    <th>Matrícula</th>
+    <th>Materia</th>
+    <th>Grupo</th>
+    <th>Periodo</th>
+    <th>Fecha Registro</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+</tr>
+{% endblock %}
+
+{% block table_body %}
+{% for ins in inscripciones %}
+<tr>
+    <td><strong>{{ ins.usuario.nombre|default:ins.usuario.username }} {{ ins.usuario.apaterno|default:"" }}</strong></td>
+    <td>{{ ins.usuario.matricula|default:"--" }}</td>
+    <td>{{ ins.materia.nombre }}</td>
+    <td><span class="badge-role">{{ ins.grupo }}</span></td>
+    <td>{{ ins.periodo }}</td>
+    <td><span style="font-size: 0.85rem; color: var(--text-muted);">{{ ins.fecha_inscripcion|date:"d/m/Y H:i" }}</span></td>
+    <td>
+        {% if ins.activa %}
+        <span class="badge-status badge-active">Activa</span>
+        {% else %}
+        <span class="badge-status badge-inactive">Inactiva</span>
+        {% endif %}
+    </td>
+    <td>
+        <div class="actions">
+            <a href="{% url 'academico:inscripcion_update' ins.pk %}" class="btn-action btn-edit" title="Editar"><i class="fa-solid fa-pen"></i></a>
+            <a href="{% url 'academico:inscripcion_delete' ins.pk %}" class="btn-action btn-delete" title="Eliminar"><i class="fa-solid fa-trash"></i></a>
+        </div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+        No se encontraron inscripciones registradas.
+    </td>
+</tr>
+{% endfor %}
+{% endblock %}

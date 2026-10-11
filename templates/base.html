@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PassID - Sistema de Control Institucional{% endblock %}</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- External CSS (Dark Glassmorphism Theme) -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    {% include "partials/navbar.html" %}
+
+    <main class="main-container">
+        {% include "partials/messages.html" %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 PassID - UTVAM | Sistema Integral de Control Institucional MVC/MVT</p>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
