@@ -27,6 +27,7 @@
     </td>
     <td>
         <div class="actions">
+            <a href="{% url 'academico:aula_detail' a.pk %}" class="btn-action btn-view" title="Ver detalles"><i class="fa-solid fa-eye"></i></a>
             <a href="{% url 'academico:aula_update' a.pk %}" class="btn-action btn-edit" title="Editar"><i class="fa-solid fa-pen"></i></a>
             <a href="{% url 'academico:aula_delete' a.pk %}" class="btn-action btn-delete" title="Eliminar"><i class="fa-solid fa-trash"></i></a>
         </div>

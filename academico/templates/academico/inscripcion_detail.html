@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main-container">
+    <!-- Encabezado con Botones de Acción -->
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">Detalles de la Inscripción</h2>
+            <div class="page-subtitle">Matrícula o Registro del Estudiante</div>
+        </div>
+        <div class="actions" style="align-items: center;">
+            <!-- Botón Editar -->
+            <a href="{% url 'academico:inscripcion_update' inscripcion.pk %}" class="btn-action btn-edit" title="Editar">
+                <i class="fa-solid fa-pen"></i>
+            </a>
+            
+            <!-- Botón Eliminar -->
+            <a href="{% url 'academico:inscripcion_delete' inscripcion.pk %}" class="btn-action btn-delete" title="Eliminar">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+            
+            <!-- Botón Regresar -->
+            <a href="{% url 'academico:inscripcion_list' %}" class="btn-cancel" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-left: 0.5rem;">
+                <i class="fa-solid fa-arrow-left"></i> Regresar
+            </a>
+        </div>
+    </div>
+
+    <!-- Tarjeta de Información (Solo lectura) -->
+    <div class="glass-card" style="padding: 2rem; margin-bottom: 2.5rem;">
+        <div class="grid-2">
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Alumno</span>
+                <div style="font-size: 1.15rem; font-weight: 500;">
+                    {{ inscripcion.usuario.nombre|default:inscripcion.usuario.username }}
+                    {% if inscripcion.usuario.matricula %}
+                        <span class="badge-role" style="font-size: 0.8rem; vertical-align: middle; margin-left: 0.5rem;">
+                            {{ inscripcion.usuario.matricula }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Materia Asignada</span>
+                <div style="font-size: 1.15rem; font-weight: 500;">{{ inscripcion.materia.nombre }}</div>
+            </div>
+            
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Grupo</span>
+                <div style="font-size: 1.15rem; font-weight: 500;">{{ inscripcion.grupo|default:"No asignado" }}</div>
+            </div>
+            
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Periodo Académico</span>
+                <div style="font-size: 1.15rem; font-weight: 500;">{{ inscripcion.periodo|default:"No especificado" }}</div>
+            </div>
+            
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Fecha de Inscripción</span>
+                <div style="font-size: 1.15rem; font-weight: 500;">
+                    {{ inscripcion.fecha_inscripcion|date:"d de F Y, h:i a" }}
+                </div>
+            </div>
+            
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Estado del Registro</span>
+                <div style="margin-top: 0.3rem;">
+                     <span class="badge-status badge-active">Inscrito</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

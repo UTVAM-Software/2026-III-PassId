@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main-container">
+    <!-- Encabezado con Botones de Acción -->
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">Detalles de la Materia: {{ materia.clave }}</h2>
+        </div>
+        <div class="actions" style="align-items: center;">
+            <!-- Botón Editar / Actualizar -->
+            <a href="{% url 'academico:materia_update' materia.pk %}" class="btn-action btn-edit" title="Editar">
+                <i class="fa-solid fa-pen"></i>
+            </a>
+            
+            <!-- Botón Eliminar -->
+            <a href="{% url 'academico:materia_delete' materia.pk %}" class="btn-action btn-delete" title="Eliminar">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+            
+            <!-- Botón Regresar -->
+            <a href="{% url 'academico:materia_list' %}" class="btn-cancel" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-left: 0.5rem;">
+                <i class="fa-solid fa-arrow-left"></i> Regresar
+            </a>
+        </div>
+    </div>
+
+    <!-- Tarjeta de Información (Solo lectura) -->
+    <div class="glass-card" style="padding: 2rem; margin-bottom: 2.5rem;">
+        <div class="grid-2">
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Clave</span>
+                <div style="font-size: 1.15rem; font-weight: 500;">{{ materia.clave }}</div>
+            </div>
+            
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Nombre de la Asignatura</span>
+                <div style="font-size: 1.15rem; font-weight: 500;">{{ materia.nombre }}</div>
+            </div>
+            
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Carrera Asociada</span>
+                <div style="font-size: 1.15rem; font-weight: 500;">
+                    <!-- Se muestra el nombre de la carrera a la que pertenece -->
+                    {{ materia.carrera.nombre }}
+                </div>
+            </div>
+            
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Periodo / Cuatrimestre</span>
+                <div style="font-size: 1.15rem; font-weight: 500;">{{ materia.periodo|default:"No especificado" }}</div>
+            </div>
+            
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Créditos / Horas</span>
+                <div style="font-size: 1.15rem; font-weight: 500;">{{ materia.creditos|default:"0" }}</div>
+            </div>
+            
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Estado</span>
+                <div style="margin-top: 0.3rem;">
+                     <span class="badge-status badge-active">Activa</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

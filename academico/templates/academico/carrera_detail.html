@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main-container">
+    <!-- Encabezado -->
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">Detalles de la Carrera: {{ carrera.clave }}</h2>
+        </div>
+        <div class="actions" style="align-items: center;">
+            <a href="{% url 'academico:carrera_update' carrera.pk %}" class="btn-action btn-edit" title="Editar">
+                <i class="fa-solid fa-pen"></i>
+            </a>
+            <a href="{% url 'academico:carrera_list' %}" class="btn-cancel" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-left: 0.5rem;">
+                <i class="fa-solid fa-arrow-left"></i> Regresar
+            </a>
+        </div>
+    </div>
+
+    <!-- Tarjeta de Información (Usando tu glass-card y grid-2) -->
+    <div class="glass-card" style="padding: 2rem; margin-bottom: 2.5rem;">
+        <div class="grid-2">
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Clave de la Carrera</span>
+                <div style="font-size: 1.15rem; font-weight: 500;">{{ carrera.clave }}</div>
+            </div>
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Nombre</span>
+                <div style="font-size: 1.15rem; font-weight: 500;">{{ carrera.nombre }}</div>
+            </div>
+            <div>
+                <span class="form-label" style="text-transform: uppercase;">Estado</span>
+                <div style="margin-top: 0.3rem;">
+                    {% if carrera.activa %}
+                        <span class="badge-status badge-active">Activa</span>
+                    {% else %}
+                        <span class="badge-status badge-inactive">Inactiva</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de Materias Vinculadas -->
+    <div class="page-header" style="margin-bottom: 1.5rem;">
+        <h3 class="page-title" style="font-size: 1.4rem;">
+            <i class="fa-solid fa-book"></i> Materias vinculadas 
+            <span class="badge-role" style="font-size: 1rem; padding: 0.2rem 0.6rem; margin-left: 0.5rem;">{{ materias.count }}</span>
+        </h3>
+    </div>
+
+    <!-- Tabla usando tu clase .table dentro de un glass-card -->
+    <div class="glass-card">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>CLAVE <i class="fa-solid fa-sort"></i></th>
+                    <th>NOMBRE <i class="fa-solid fa-sort"></i></th>
+                    <th>CRÉDITOS <i class="fa-solid fa-sort"></i></th>
+                    <th>PERIODO <i class="fa-solid fa-sort"></i></th>
+                    <th>ESTADO <i class="fa-solid fa-sort"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in materias %}
+                <tr>
+                    <td>{{ m.clave }}</td>
+                    <td>{{ m.nombre }}</td>
+                    <td>{{ m.creditos|default:"0" }}</td>
+                    <td>{{ m.periodo|default:"—" }}</td>
+                    <td><span class="badge-status badge-active">Activa</span></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 3rem;">
+                        No se encontraron materias registradas para esta carrera.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
