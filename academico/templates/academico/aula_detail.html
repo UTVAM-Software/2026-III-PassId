@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main-container">
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">Detalles del Aula: {{ aula.codigo }}</h2>
+        </div>
+        <div class="actions">
+            <a href="{% url 'academico:aula_update' aula.pk %}" class="btn-action btn-edit" title="Editar">
+                <i class="fa-solid fa-pen"></i>
+            </a>
+            <a href="{% url 'academico:aula_delete' aula.pk %}" class="btn-action btn-delete" title="Eliminar">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+            <a href="{% url 'academico:aula_list' %}" class="btn-cancel">
+                <i class="fa-solid fa-arrow-left"></i> Regresar
+            </a>
+        </div>
+    </div>
+
+    <div class="glass-card messages">
+        <div class="grid-2" style="padding: 2.5rem;">
+            <div>
+                <span class="form-label">CÓDIGO DEL AULA</span>
+                <div class="form-title">{{ aula.codigo }}</div>
+            </div>
+            <div>
+                <span class="form-label">EDIFICIO / UBICACIÓN</span>
+                <div class="form-title">{{ aula.edificio|default:"No especificado" }}</div>
+            </div>
+            <div>
+                <span class="form-label">TIPO DE ESPACIO</span>
+                <div class="form-title">{{ aula.tipo|default:"Estándar" }}</div>
+            </div>
+             <div>
+                <span class="form-label">ESTADO</span>
+                <div class="messages">
+                     <span class="badge-status badge-active">Disponible</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <h3 class="page-title">
+            <i class="fa-solid fa-clock"></i> Horarios asignados 
+            <span class="badge-role">{{ horarios.count }}</span>
+        </h3>
+    </div>
+
+    <div class="glass-card">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>DÍA <i class="fa-solid fa-sort"></i></th>
+                    <th>HORA INICIO <i class="fa-solid fa-sort"></i></th>
+                    <th>HORA FIN <i class="fa-solid fa-sort"></i></th>
+                    <th>MATERIA <i class="fa-solid fa-sort"></i></th>
+                    <th>PROFESOR <i class="fa-solid fa-sort"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for h in horarios %}
+                <tr>
+                    <td><span class="badge-role">{{ h.dia_semana }}</span></td>
+                    <td>{{ h.hora_inicio|time:"H:i" }}</td>
+                    <td>{{ h.hora_fin|time:"H:i" }}</td>
+                    <td>{{ h.materia.nombre }}</td>
+                    <td>{{ h.profesor.nombre|default:h.profesor.username }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="page-subtitle text-center">
+                        No hay horarios asignados a este espacio actualmente.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

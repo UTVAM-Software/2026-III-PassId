@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.db.models import Q
 from django.contrib import messages
 from core.mixins import PassIdPermissionMixin
@@ -95,6 +95,20 @@ class CarreraDeleteView(PassIdPermissionMixin, DeleteView):
         context["cancel_url"] = reverse_lazy("academico:carrera_list")
         return context
 
+class CarreraDetailView(PassIdPermissionMixin, DetailView):
+    model = Carrera
+    template_name = "academico/carrera_detail.html"
+    context_object_name = "carrera"
+    required_permission = "carrera.view_carrera"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = f"Detalles de la Carrera: {self.object.clave}"
+        context["list_url"] = reverse_lazy("academico:carrera_list")
+        context["update_url"] = reverse_lazy("academico:carrera_update", kwargs={'pk': self.object.pk})
+        context["materias"] = self.object.materias.all()
+        return context
+
 
 # ==============================================================================
 # VISTAS DE AULA
@@ -185,6 +199,20 @@ class AulaDeleteView(PassIdPermissionMixin, DeleteView):
         context["cancel_url"] = reverse_lazy("academico:aula_list")
         return context
 
+class AulaDetailView(PassIdPermissionMixin, DetailView):
+    model = Aula
+    template_name = "academico/aula_detail.html"
+    context_object_name = "aula"
+    required_permission = "aula.view_aula"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = f"Detalles del Aula: {self.object.codigo}"
+        context["list_url"] = reverse_lazy("academico:aula_list")
+        context["update_url"] = reverse_lazy("academico:aula_update", kwargs={'pk': self.object.pk})
+        context["horarios"] = self.object.horarios.all()
+        return context 
+
 
 # ==============================================================================
 # VISTAS DE MATERIA
@@ -274,6 +302,19 @@ class MateriaDeleteView(PassIdPermissionMixin, DeleteView):
         context = super().get_context_data(**kwargs)
         context["title"] = f"Eliminar Materia: {self.object.clave}"
         context["cancel_url"] = reverse_lazy("academico:materia_list")
+        return context
+
+class MateriaDetailView(PassIdPermissionMixin, DetailView):
+    model = Materia
+    template_name = "academico/materia_detail.html"
+    context_object_name = "materia"
+    required_permission = "materia.view_materia"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = f"Detalles de la Materia: {self.object.clave}"
+        context["list_url"] = reverse_lazy("academico:materia_list")
+        context["update_url"] = reverse_lazy("academico:materia_update", kwargs={'pk': self.object.pk})
         return context
 
 
@@ -368,6 +409,19 @@ class HorarioDeleteView(PassIdPermissionMixin, DeleteView):
         context["cancel_url"] = reverse_lazy("academico:horario_list")
         return context
 
+class HorarioDetailView(PassIdPermissionMixin, DetailView):
+    model = Horario
+    template_name = "academico/horario_detail.html"
+    context_object_name = "horario"
+    required_permission = "horario.view_horario"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Detalles del Horario"
+        context["list_url"] = reverse_lazy("academico:horario_list")
+        context["update_url"] = reverse_lazy("academico:horario_update", kwargs={'pk': self.object.pk})
+        return context    
+
 
 # ==============================================================================
 # VISTAS DE INSCRIPCIÓN
@@ -459,3 +513,17 @@ class InscripcionDeleteView(PassIdPermissionMixin, DeleteView):
         context["title"] = "Eliminar Inscripción"
         context["cancel_url"] = reverse_lazy("academico:inscripcion_list")
         return context
+
+class InscripcionDetailView(PassIdPermissionMixin, DetailView):
+    model = Inscripcion
+    template_name = "academico/inscripcion_detail.html"
+    context_object_name = "inscripcion"
+    required_permission = "inscripcion.view_inscripcion"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "Detalles de la Inscripción"
+        context["list_url"] = reverse_lazy("academico:inscripcion_list")
+        context["update_url"] = reverse_lazy("academico:inscripcion_update", kwargs={'pk': self.object.pk})
+        return context
+    
