@@ -2,7 +2,6 @@
 
 {% block content %}
 <div class="container-fluid mt-4">
-    <!-- Encabezado con Título y Botones -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="h3 mb-0 text-gray-800">{{ page_title }}</h2>
@@ -21,13 +20,11 @@
         </div>
     </div>
 
-    <!-- Tarjeta de Contenido -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Información Detallada</h6>
         </div>
         <div class="card-body">
-            <!-- Bloque donde se inyectarán los datos de cada modelo -->
             {% block detail_content %}
             {% endblock detail_content %}
         </div>

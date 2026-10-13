@@ -2,35 +2,36 @@
 
 {% block content %}
 <div class="main-container">
-    <!-- Encabezado -->
     <div class="page-header">
         <div>
             <h2 class="page-title">Detalles de la Carrera: {{ carrera.clave }}</h2>
         </div>
-        <div class="actions" style="align-items: center;">
+        <div class="actions">
             <a href="{% url 'academico:carrera_update' carrera.pk %}" class="btn-action btn-edit" title="Editar">
                 <i class="fa-solid fa-pen"></i>
             </a>
-            <a href="{% url 'academico:carrera_list' %}" class="btn-cancel" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-left: 0.5rem;">
+            <a href="{% url 'academico:carrera_delete' carrera.pk %}" class="btn-action btn-delete" title="Eliminar">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+            <a href="{% url 'academico:carrera_list' %}" class="btn-cancel">
                 <i class="fa-solid fa-arrow-left"></i> Regresar
             </a>
         </div>
     </div>
 
-    <!-- Tarjeta de Información (Usando tu glass-card y grid-2) -->
-    <div class="glass-card" style="padding: 2rem; margin-bottom: 2.5rem;">
-        <div class="grid-2">
+    <div class="glass-card messages">
+        <div class="grid-2" style="padding: 2.5rem;"> 
             <div>
-                <span class="form-label" style="text-transform: uppercase;">Clave de la Carrera</span>
-                <div style="font-size: 1.15rem; font-weight: 500;">{{ carrera.clave }}</div>
+                <span class="form-label">CLAVE DE LA CARRERA</span>
+                <div class="form-title">{{ carrera.clave }}</div>
             </div>
             <div>
-                <span class="form-label" style="text-transform: uppercase;">Nombre</span>
-                <div style="font-size: 1.15rem; font-weight: 500;">{{ carrera.nombre }}</div>
+                <span class="form-label">NOMBRE</span>
+                <div class="form-title">{{ carrera.nombre }}</div>
             </div>
             <div>
-                <span class="form-label" style="text-transform: uppercase;">Estado</span>
-                <div style="margin-top: 0.3rem;">
+                <span class="form-label">ESTADO</span>
+                <div class="messages">
                     {% if carrera.activa %}
                         <span class="badge-status badge-active">Activa</span>
                     {% else %}
@@ -41,15 +42,13 @@
         </div>
     </div>
 
-    <!-- Sección de Materias Vinculadas -->
-    <div class="page-header" style="margin-bottom: 1.5rem;">
-        <h3 class="page-title" style="font-size: 1.4rem;">
+    <div class="page-header">
+        <h3 class="page-title">
             <i class="fa-solid fa-book"></i> Materias vinculadas 
-            <span class="badge-role" style="font-size: 1rem; padding: 0.2rem 0.6rem; margin-left: 0.5rem;">{{ materias.count }}</span>
+            <span class="badge-role">{{ materias.count }}</span>
         </h3>
     </div>
 
-    <!-- Tabla usando tu clase .table dentro de un glass-card -->
     <div class="glass-card">
         <table class="table">
             <thead>
@@ -72,7 +71,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 3rem;">
+                    <td colspan="5" class="page-subtitle text-center">
                         No se encontraron materias registradas para esta carrera.
                     </td>
                 </tr>

@@ -2,54 +2,53 @@
 
 {% block content %}
 <div class="main-container">
-    <!-- Encabezado -->
     <div class="page-header">
         <div>
             <h2 class="page-title">Detalles del Aula: {{ aula.codigo }}</h2>
         </div>
-        <div class="actions" style="align-items: center;">
+        <div class="actions">
             <a href="{% url 'academico:aula_update' aula.pk %}" class="btn-action btn-edit" title="Editar">
                 <i class="fa-solid fa-pen"></i>
             </a>
-            <a href="{% url 'academico:aula_list' %}" class="btn-cancel" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-left: 0.5rem;">
+            <a href="{% url 'academico:aula_delete' aula.pk %}" class="btn-action btn-delete" title="Eliminar">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+            <a href="{% url 'academico:aula_list' %}" class="btn-cancel">
                 <i class="fa-solid fa-arrow-left"></i> Regresar
             </a>
         </div>
     </div>
 
-    <!-- Tarjeta de Información (Usando tu glass-card y grid-2) -->
-    <div class="glass-card" style="padding: 2rem; margin-bottom: 2.5rem;">
-        <div class="grid-2">
+    <div class="glass-card messages">
+        <div class="grid-2" style="padding: 2.5rem;">
             <div>
-                <span class="form-label" style="text-transform: uppercase;">Código del Aula</span>
-                <div style="font-size: 1.15rem; font-weight: 500;">{{ aula.codigo }}</div>
+                <span class="form-label">CÓDIGO DEL AULA</span>
+                <div class="form-title">{{ aula.codigo }}</div>
             </div>
             <div>
-                <span class="form-label" style="text-transform: uppercase;">Edificio / Ubicación</span>
-                <div style="font-size: 1.15rem; font-weight: 500;">{{ aula.edificio|default:"No especificado" }}</div>
+                <span class="form-label">EDIFICIO / UBICACIÓN</span>
+                <div class="form-title">{{ aula.edificio|default:"No especificado" }}</div>
             </div>
             <div>
-                <span class="form-label" style="text-transform: uppercase;">Tipo de Espacio</span>
-                <div style="font-size: 1.15rem; font-weight: 500;">{{ aula.tipo|default:"Estándar" }}</div>
+                <span class="form-label">TIPO DE ESPACIO</span>
+                <div class="form-title">{{ aula.tipo|default:"Estándar" }}</div>
             </div>
              <div>
-                <span class="form-label" style="text-transform: uppercase;">Estado</span>
-                <div style="margin-top: 0.3rem;">
+                <span class="form-label">ESTADO</span>
+                <div class="messages">
                      <span class="badge-status badge-active">Disponible</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Sección de Horarios Vinculados -->
-    <div class="page-header" style="margin-bottom: 1.5rem;">
-        <h3 class="page-title" style="font-size: 1.4rem;">
+    <div class="page-header">
+        <h3 class="page-title">
             <i class="fa-solid fa-clock"></i> Horarios asignados 
-            <span class="badge-role" style="font-size: 1rem; padding: 0.2rem 0.6rem; margin-left: 0.5rem;">{{ horarios.count }}</span>
+            <span class="badge-role">{{ horarios.count }}</span>
         </h3>
     </div>
 
-    <!-- Tabla de Horarios -->
     <div class="glass-card">
         <table class="table">
             <thead>
@@ -64,7 +63,7 @@
             <tbody>
                 {% for h in horarios %}
                 <tr>
-                    <td><strong style="color: var(--accent-white);">{{ h.dia_semana }}</strong></td>
+                    <td><span class="badge-role">{{ h.dia_semana }}</span></td>
                     <td>{{ h.hora_inicio|time:"H:i" }}</td>
                     <td>{{ h.hora_fin|time:"H:i" }}</td>
                     <td>{{ h.materia.nombre }}</td>
@@ -72,7 +71,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 3rem;">
+                    <td colspan="5" class="page-subtitle text-center">
                         No hay horarios asignados a este espacio actualmente.
                     </td>
                 </tr>
