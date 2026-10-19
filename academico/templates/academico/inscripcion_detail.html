@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main-container">
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">Detalles de la Inscripción</h2>
+            <div class="page-subtitle">Matrícula o Registro del Estudiante</div>
+        </div>
+        <div class="actions">
+            <a href="{% url 'academico:inscripcion_update' inscripcion.pk %}" class="btn-action btn-edit" title="Editar">
+                <i class="fa-solid fa-pen"></i>
+            </a>
+            <a href="{% url 'academico:inscripcion_delete' inscripcion.pk %}" class="btn-action btn-delete" title="Eliminar">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+            <a href="{% url 'academico:inscripcion_list' %}" class="btn-cancel">
+                <i class="fa-solid fa-arrow-left"></i> Regresar
+            </a>
+        </div>
+    </div>
+
+    <div class="glass-card">
+        <div class="grid-2" style="padding: 2.5rem;">
+            <div>
+                <span class="form-label">ALUMNO</span>
+                <div class="form-title">
+                    {{ inscripcion.usuario.nombre|default:inscripcion.usuario.username }}
+                    {% if inscripcion.usuario.matricula %}
+                        <span class="badge-role">{{ inscripcion.usuario.matricula }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div>
+                <span class="form-label">MATERIA ASIGNADA</span>
+                <div class="form-title">{{ inscripcion.materia.nombre }}</div>
+            </div>
+            <div>
+                <span class="form-label">GRUPO</span>
+                <div class="form-title">{{ inscripcion.grupo|default:"No asignado" }}</div>
+            </div>
+            <div>
+                <span class="form-label">PERIODO ACADÉMICO</span>
+                <div class="form-title">{{ inscripcion.periodo|default:"No especificado" }}</div>
+            </div>
+            <div>
+                <span class="form-label">FECHA DE INSCRIPCIÓN</span>
+                <div class="form-title">{{ inscripcion.fecha_inscripcion|date:"d de F Y, h:i a" }}</div>
+            </div>
+            <div>
+                <span class="form-label">ESTADO DEL REGISTRO</span>
+                <div class="messages">
+                     <span class="badge-status badge-active">Inscrito</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

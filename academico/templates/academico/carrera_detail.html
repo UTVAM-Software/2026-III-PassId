@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main-container">
+    <div class="page-header">
+        <div>
+            <h2 class="page-title">Detalles de la Carrera: {{ carrera.clave }}</h2>
+        </div>
+        <div class="actions">
+            <a href="{% url 'academico:carrera_update' carrera.pk %}" class="btn-action btn-edit" title="Editar">
+                <i class="fa-solid fa-pen"></i>
+            </a>
+            <a href="{% url 'academico:carrera_delete' carrera.pk %}" class="btn-action btn-delete" title="Eliminar">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+            <a href="{% url 'academico:carrera_list' %}" class="btn-cancel">
+                <i class="fa-solid fa-arrow-left"></i> Regresar
+            </a>
+        </div>
+    </div>
+
+    <div class="glass-card messages">
+        <div class="grid-2" style="padding: 2.5rem;"> 
+            <div>
+                <span class="form-label">CLAVE DE LA CARRERA</span>
+                <div class="form-title">{{ carrera.clave }}</div>
+            </div>
+            <div>
+                <span class="form-label">NOMBRE</span>
+                <div class="form-title">{{ carrera.nombre }}</div>
+            </div>
+            <div>
+                <span class="form-label">ESTADO</span>
+                <div class="messages">
+                    {% if carrera.activa %}
+                        <span class="badge-status badge-active">Activa</span>
+                    {% else %}
+                        <span class="badge-status badge-inactive">Inactiva</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <h3 class="page-title">
+            <i class="fa-solid fa-book"></i> Materias vinculadas 
+            <span class="badge-role">{{ materias.count }}</span>
+        </h3>
+    </div>
+
+    <div class="glass-card">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>CLAVE <i class="fa-solid fa-sort"></i></th>
+                    <th>NOMBRE <i class="fa-solid fa-sort"></i></th>
+                    <th>CRÉDITOS <i class="fa-solid fa-sort"></i></th>
+                    <th>PERIODO <i class="fa-solid fa-sort"></i></th>
+                    <th>ESTADO <i class="fa-solid fa-sort"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in materias %}
+                <tr>
+                    <td>{{ m.clave }}</td>
+                    <td>{{ m.nombre }}</td>
+                    <td>{{ m.creditos|default:"0" }}</td>
+                    <td>{{ m.periodo|default:"—" }}</td>
+                    <td><span class="badge-status badge-active">Activa</span></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="page-subtitle text-center">
+                        No se encontraron materias registradas para esta carrera.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
