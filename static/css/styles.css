@@ -567,3 +567,24 @@ footer {
     border-top: 1px solid var(--border-glass);
     margin-top: 3rem;
 }
+
+.pass-id-qr-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 8px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.pass-id-qr {
+    display: block;
+    width: 200px;
+    height: 200px;
+    max-width: 100%;
+    object-fit: contain;
+}
