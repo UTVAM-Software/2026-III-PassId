@@ -14,7 +14,7 @@ class CustomLoginView(LoginView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy("usuarios:usuario_list")
+        return reverse_lazy("home")
 
 
 class CustomLogoutView(LogoutView):

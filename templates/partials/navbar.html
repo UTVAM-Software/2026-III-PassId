@@ -1,6 +1,6 @@
 <header>
     <nav class="navbar">
-        <a href="{% if user.is_authenticated %}{% url 'usuarios:usuario_list' %}{% else %}{% url 'autenticacion:login' %}{% endif %}" class="brand">
+        <a href="{% if user.is_authenticated %}{% url 'home' %}{% else %}{% url 'autenticacion:login' %}{% endif %}" class="brand">
             <i class="fa-solid fa-id-card"></i>
             <span>PassID</span>
         </a>
