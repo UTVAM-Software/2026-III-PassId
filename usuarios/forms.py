@@ -163,3 +163,17 @@ class UsuarioUpdateForm(forms.ModelForm):
             user.save()
             self.save_m2m()
         return user
+
+class MiPerfilForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = [
+            'nombre', 
+            'apaterno', 
+            'amaterno',
+            'categoria',
+            'grupo',
+            'email',
+            'whatsapp',
+        ]
+        

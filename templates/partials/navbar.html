@@ -75,10 +75,12 @@
 
             <!-- Información de Usuario y Logout -->
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-left: 0.5rem;">
-                <span class="nav-user-badge" title="{{ user.email }}">
-                    <i class="fa-solid fa-circle-user"></i>
+                
+                <a href="{% url 'usuarios:mi_perfil' %}" class="nav-user-badge" title="Configurar Mi Perfil ({{ user.email }})">
+                    <i class="fa-solid fa-user-gear"></i>
                     {{ user.username }}
-                </span>
+                </a>
+
                 <form method="post" action="{% url 'autenticacion:logout' %}" style="display: inline; margin: 0;">
                     {% csrf_token %}
                     <button type="submit" class="btn-logout" title="Cerrar sesión">
