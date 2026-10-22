@@ -13,6 +13,7 @@ from .views import (
     UsuarioUpdateView,
     UsuarioDeleteView,
     MiPerfilView,
+    CambiarPasswordView,
 )
 
 app_name = "usuarios"
@@ -33,4 +34,5 @@ urlpatterns = [
     path("usuarios/<int:pk>/editar/", UsuarioUpdateView.as_view(), name="usuario_update"),
     path("usuarios/<int:pk>/eliminar/", UsuarioDeleteView.as_view(), name="usuario_delete"),
     path("mi-perfil/", MiPerfilView.as_view(), name="mi_perfil"),
+    path('cambiar-password/', CambiarPasswordView.as_view(), name='cambiar_password'),
 ]
