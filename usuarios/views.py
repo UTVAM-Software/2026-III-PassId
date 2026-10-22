@@ -5,7 +5,8 @@ from django.db.models import Q
 from django.contrib import messages
 from core.mixins import PassIdPermissionMixin
 from .models import Permiso, Perfil, Usuario
-from .forms import PermisoForm, PerfilForm, UsuarioCreateForm, UsuarioUpdateForm
+from django.contrib.auth import logout
+from .forms import PermisoForm, PerfilForm, UsuarioCreateForm, UsuarioUpdateForm, MiPerfilForm
 
 class PermisoListView(PassIdPermissionMixin, ListView):
     model = Permiso
@@ -225,3 +226,25 @@ class UsuarioDeleteView(PassIdPermissionMixin, DeleteView):
         usuario = self.get_object()
         messages.success(request, f"Usuario '{usuario.username}' eliminado correctamente.")
         return super().delete(request, *args, **kwargs)
+
+class MiPerfilView(PassIdPermissionMixin, UpdateView):
+    model = Usuario
+    form_class = MiPerfilForm
+    template_name = 'usuarios/mi_perfil.html' 
+    success_url = reverse_lazy('autenticacion:login')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Configuración de mi Perfil'
+        context['cancel_url'] = reverse_lazy('home')
+        context['submit_text'] = 'Guardar Cambios'
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, "Perfil actualizado exitosamente. Por favor, inicia sesión nuevamente.")
+        response = super().form_valid(form)
+        logout(self.request)
+        return response
