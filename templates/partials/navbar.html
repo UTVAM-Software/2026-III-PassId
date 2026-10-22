@@ -76,7 +76,7 @@
             <!-- Información de Usuario y Logout -->
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-left: 0.5rem;">
                 
-                <a href="{% url 'usuarios:mi_perfil' %}" class="nav-user-badge" title="Configurar Mi Perfil ({{ user.email }})" style="text-decoration: none; cursor: pointer;">
+                <a href="{% url 'usuarios:mi_perfil' %}" class="nav-user-badge" title="Configurar Mi Perfil ({{ user.email }})">
                     <i class="fa-solid fa-user-gear"></i>
                     {{ user.username }}
                 </a>
