@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.contrib import messages
 from core.mixins import PassIdPermissionMixin
 from .models import Permiso, Perfil, Usuario
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth import logout
 from .forms import PermisoForm, PerfilForm, UsuarioCreateForm, UsuarioUpdateForm, MiPerfilForm
 
@@ -245,6 +246,16 @@ class MiPerfilView(PassIdPermissionMixin, UpdateView):
 
     def form_valid(self, form):
         messages.success(self.request, "Perfil actualizado exitosamente. Por favor, inicia sesión nuevamente.")
+        response = super().form_valid(form)
+        logout(self.request)
+        return response
+
+class CambiarPasswordView(PasswordChangeView):
+    template_name = 'usuarios/cambiar_password.html'
+    success_url = reverse_lazy('autenticacion:login')
+
+    def form_valid(self, form):
+        messages.success(self.request, "Tu contraseña ha sido actualizada. Por favor, inicia sesión con tu nueva contraseña.")
         response = super().form_valid(form)
         logout(self.request)
         return response
