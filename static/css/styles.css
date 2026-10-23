@@ -42,54 +42,119 @@ header {
 }
 
 .navbar {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 1.1rem 1.5rem;
+    padding: 0.75rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
 }
 
 .brand {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.6rem;
     text-decoration: none;
     color: var(--text-main);
     font-weight: 700;
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     letter-spacing: -0.02em;
+    flex-shrink: 0;
 }
 
 .brand i {
     color: #ffffff;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 
+/* ── Nav links wrapper ── */
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.25rem;
+    flex-wrap: nowrap;
 }
 
-.nav-link {
+/* ── Triggers y enlaces del nav (estilos compartidos) ── */
+.nav-link,
+.nav-trigger {
     color: var(--text-muted);
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 500;
-    padding: 0.55rem 1rem;
+    padding: 0.45rem 0.75rem;
     border-radius: 8px;
-    transition: all 0.2s ease;
+    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid transparent;
+    font-family: inherit;
+    white-space: nowrap;
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link:hover,
+.nav-link.active,
+.nav-trigger:hover,
+.nav-dropdown.is-open > .nav-trigger {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.15);
 }
+
+.nav-chevron {
+    font-size: 0.65rem;
+    transition: transform 0.2s ease;
+}
+
+.nav-dropdown.is-open > .nav-trigger .nav-chevron {
+    transform: rotate(180deg);
+}
+
+/* ── Hamburger (solo móvil) ── */
+.nav-hamburger {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--border-glass);
+    color: var(--text-main);
+    border-radius: 8px;
+    padding: 0.45rem 0.65rem;
+    cursor: pointer;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+/* ── Acciones de usuario (separadas del menú principal) ── */
+.nav-user-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: 0.5rem;
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--border-glass);
+}
+
+.nav-icon-btn {
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    padding: 0.45rem 0.55rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.nav-icon-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
 
 .main-container {
     max-width: 1200px;
@@ -508,10 +573,10 @@ header {
 .nav-dropdown-menu {
     display: none;
     position: absolute;
-    top: 100%;
+    top: calc(100% + 4px);
     left: 0;
     min-width: 200px;
-    background: rgba(18, 18, 20, 0.95);
+    background: rgba(18, 18, 20, 0.97);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--border-glass);
@@ -523,22 +588,23 @@ header {
     gap: 0.25rem;
 }
 
-.nav-dropdown:hover .nav-dropdown-menu,
-.nav-dropdown:focus-within .nav-dropdown-menu {
+/* Apertura por click (JS) — controlado exclusivamente con .is-open */
+.nav-dropdown.is-open > .nav-dropdown-menu {
     display: flex;
 }
 
 .nav-dropdown-item {
     color: var(--text-muted);
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     font-weight: 500;
     padding: 0.5rem 0.85rem;
     border-radius: 6px;
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    transition: all 0.2s ease;
+    transition: color 0.2s ease, background 0.2s ease;
+    white-space: nowrap;
 }
 
 .nav-dropdown-item:hover {
@@ -546,17 +612,33 @@ header {
     background: rgba(255, 255, 255, 0.1);
 }
 
+/* Badge de usuario: link estilizado */
 .nav-user-badge {
     color: var(--text-main);
+    text-decoration: none;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.55rem 0.85rem;
+    gap: 0.45rem;
+    padding: 0.45rem 0.75rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-subtle);
     border-radius: 8px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+}
+
+.nav-user-badge:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.nav-username {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .btn-logout {
@@ -565,13 +647,15 @@ header {
     color: #f87171;
     font-size: 0.85rem;
     font-weight: 600;
-    padding: 0.45rem 0.85rem;
+    padding: 0.45rem 0.75rem;
     border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    transition: all 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    font-family: inherit;
+    white-space: nowrap;
 }
 
 .btn-logout:hover {
@@ -608,4 +692,67 @@ footer {
     height: 200px;
     max-width: 100%;
     object-fit: contain;
+}
+
+/* ── Responsive: menú móvil ── */
+@media (max-width: 900px) {
+    .nav-hamburger {
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.25rem;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(12, 12, 14, 0.98);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border-glass);
+        padding: 0.75rem 1rem;
+        z-index: 99;
+    }
+
+    .nav-links.is-open {
+        display: flex;
+    }
+
+    .nav-dropdown {
+        display: block;
+    }
+
+    .nav-trigger,
+    .nav-link {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .nav-dropdown-menu {
+        position: static;
+        box-shadow: none;
+        border: none;
+        border-left: 2px solid var(--border-glass);
+        border-radius: 0;
+        margin-left: 1rem;
+        padding: 0.25rem 0;
+    }
+
+    .nav-user-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+        border-left: none;
+        border-top: 1px solid var(--border-glass);
+        padding: 0.5rem 0 0;
+        margin: 0.5rem 0 0;
+        width: 100%;
+    }
+
+    .nav-username {
+        max-width: 80px;
+    }
 }
