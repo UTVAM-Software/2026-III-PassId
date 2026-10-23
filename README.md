@@ -57,6 +57,7 @@ El proyecto esta organizado bajo una arquitectura de aplicaciones desacopladas, 
 |-- core/                  # Configuracion central del proyecto (settings, urls, wsgi, asgi)
 |-- usuarios/              # Autenticacion, usuarios institucionales, perfiles y permisos
 |-- academico/             # Carreras, aulas, materias, horarios, inscripciones y asistencia QR
+|-- asistencia_qr/         # Generacion y lectura de QR para asistencia a clases
 |-- eventos/               # Eventos institucionales, pre-registro, control de acceso y reportes
 |-- docs/                  # Documentacion de diseño tecnico y matriz de migracion
 |-- manage.py              # Script utilitario de administracion de Django
@@ -96,6 +97,13 @@ El sistema integra 18 modelos que cubren la totalidad de los datos y reglas de n
 - **ResponsableEvento** (`db_table: responsable_evento`): Personal a cargo de la coordinacion del evento.
 - **ReporteEventos** (`db_table: reporte_eventos`): Modelo no gestionado (`managed = False`) para consultar la vista SQL de metricas por evento.
 - **ReporteUsuarios** (`db_table: reporte_usuarios`): Modelo no gestionado (`managed = False`) para metricas de participacion por alumno.
+
+### Aplicacion: asistencia_qr
+- Reutiliza `Usuario.matricula`, `Inscripcion`, `Horario` y `AsistenciaClase` de `usuarios` y `academico`; no duplica sus datos.
+- El QR contiene un token firmado asociado a la matrícula, con vigencia de cinco minutos. La pantalla del alumno renueva la imagen automáticamente.
+- El lector valida la matrícula, la inscripción activa en el horario seleccionado y la ausencia de un registro previo para ese día.
+- El lector de asistencia permite escanear con la cámara o capturar la matrícula manualmente. Para usar la cámara en producción, el sitio debe servirse mediante HTTPS.
+- La migración agrega al catálogo los permisos `asistencia_qr.ver_mi_qr`, `asistencia_qr.escanear_asistencia` y `asistencia_qr.ver_asistencias`. Asígnelos a los perfiles correspondientes desde **Usuarios → Perfiles / Roles** (por ejemplo: alumno para consultar su QR; docente para leer y consultar asistencias). El lector limita los horarios a los asignados al docente; los superusuarios pueden administrar todos.
 
 ---
 

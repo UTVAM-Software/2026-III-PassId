@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Mi QR de asistencia - PassID{% endblock %}
+
+{% block content %}
+<section class="glass-card" style="max-width: 640px; margin: 0 auto; text-align: center;">
+    <h1 class="form-title">Mi código QR de asistencia</h1>
+    {% if matricula %}
+    <p style="color: var(--text-muted); margin: 0.75rem 0;">Matrícula: <strong>{{ matricula }}</strong></p>
+    <img
+        id="student-qr"
+        src="{% url 'asistencia_qr:qr_imagen' %}"
+        alt="Código QR firmado de la matrícula {{ matricula }}"
+        width="280"
+        height="280"
+        style="background: #fff; padding: 0.75rem; border-radius: 12px; margin: 1.5rem auto;"
+    >
+    <p style="color: var(--text-muted);">El código se renueva automáticamente y vence después de cinco minutos.</p>
+    {% else %}
+    <p class="alert alert-error">Tu cuenta no tiene una matrícula registrada. Contacta a administración.</p>
+    {% endif %}
+</section>
+{% endblock %}
+
+{% block extra_js %}
+{% if matricula %}
+<script>
+    window.setInterval(() => {
+        const image = document.getElementById("student-qr");
+        image.src = "{% url 'asistencia_qr:qr_imagen' %}?refresh=" + Date.now();
+    }, 240000);
+</script>
+{% endif %}
+{% endblock %}
