@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Asistencias de clase - PassID{% endblock %}
+
+{% block content %}
+<section class="glass-card">
+    <div class="page-header">
+        <div>
+            <h1 class="form-title">Asistencias de clase</h1>
+            <p style="color: var(--text-muted);">Registros QR por tus horarios asignados.</p>
+        </div>
+    </div>
+    <div style="overflow-x: auto;">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Materia</th>
+                    <th>Grupo</th>
+                    <th>Matrícula</th>
+                    <th>Alumno</th>
+                    <th>Método</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for asistencia in asistencias %}
+                <tr>
+                    <td>{{ asistencia.fecha|date:"d/m/Y" }}</td>
+                    <td>{{ asistencia.hora|time:"H:i" }}</td>
+                    <td>{{ asistencia.horario.materia.nombre }}</td>
+                    <td>{{ asistencia.horario.grupo }}</td>
+                    <td>{{ asistencia.usuario.matricula|default:"--" }}</td>
+                    <td>{{ asistencia.usuario }}</td>
+                    <td>{{ asistencia.get_metodo_display }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7">Todavía no hay asistencias registradas.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if is_paginated %}
+    <nav class="pagination" aria-label="Paginación">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+        {% endif %}
+        <span>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+        {% endif %}
+    </nav>
+    {% endif %}
+</section>
+{% endblock %}

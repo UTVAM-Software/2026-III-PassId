@@ -7,6 +7,32 @@
 
         {% if user.is_authenticated %}
         <div class="nav-links">
+            {% if user.is_superuser or perms.asistencia_qr %}
+            <div class="nav-dropdown">
+                <a href="javascript:void(0)" class="nav-link">
+                    <i class="fa-solid fa-qrcode"></i> Asistencia QR
+                    <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
+                </a>
+                <div class="nav-dropdown-menu">
+                    {% if user.is_superuser or perms.asistencia_qr.ver_mi_qr %}
+                    <a href="{% url 'asistencia_qr:mi_qr' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-id-card"></i> Mi QR
+                    </a>
+                    {% endif %}
+                    {% if user.is_superuser or perms.asistencia_qr.escanear_asistencia %}
+                    <a href="{% url 'asistencia_qr:lector' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-camera"></i> Leer asistencia
+                    </a>
+                    {% endif %}
+                    {% if user.is_superuser or perms.asistencia_qr.ver_asistencias %}
+                    <a href="{% url 'asistencia_qr:asistencia_list' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-clipboard-check"></i> Asistencias de clase
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
             <div class="nav-dropdown">
                 <a href="javascript:void(0)" class="nav-link">
                     <i class="fa-solid fa-circle-info"></i> Información
