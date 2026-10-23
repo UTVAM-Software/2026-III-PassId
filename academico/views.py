@@ -529,6 +529,7 @@ class InscripcionDetailView(PassIdPermissionMixin, DetailView):
 
 class ProgresoAsistenciaView(PassIdPermissionMixin, TemplateView):
     template_name = "academico/mi_progreso.html"
+    required_permission = "view_progreso_asistencia"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
