@@ -25,6 +25,7 @@ urlpatterns = [
     path('usuarios/', include('usuarios.urls')),
     path('academico/', include('academico.urls')),
     path('eventos/', include('eventos.urls')),
+    path('asistencia-qr/', include('asistencia_qr.urls')),
     path('home/', HomeView.as_view(), name='home'),
     path('', RedirectView.as_view(url='/home/', permanent=False)),
 ]

@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'usuarios',
     'academico',
     'eventos',
+    'asistencia_qr',
 ]
 
 AUTH_USER_MODEL = 'usuarios.Usuario'
