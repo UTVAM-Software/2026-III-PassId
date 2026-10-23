@@ -233,6 +233,7 @@ class MiPerfilView(PassIdPermissionMixin, UpdateView):
     form_class = MiPerfilForm
     template_name = 'usuarios/mi_perfil.html' 
     success_url = reverse_lazy('autenticacion:login')
+    required_permission = "usuario.change_mi_perfil"
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -250,9 +251,10 @@ class MiPerfilView(PassIdPermissionMixin, UpdateView):
         logout(self.request)
         return response
 
-class CambiarPasswordView(PasswordChangeView):
+class CambiarPasswordView(PassIdPermissionMixin, PasswordChangeView):
     template_name = 'usuarios/cambiar_password.html'
     success_url = reverse_lazy('autenticacion:login')
+    required_permission = "usuario.change_password"
 
     def form_valid(self, form):
         messages.success(self.request, "Tu contraseña ha sido actualizada. Por favor, inicia sesión con tu nueva contraseña.")
