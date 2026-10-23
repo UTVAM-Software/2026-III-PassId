@@ -7,6 +7,18 @@
 
         {% if user.is_authenticated %}
         <div class="nav-links">
+            <div class="nav-dropdown">
+                <a href="javascript:void(0)" class="nav-link">
+                    <i class="fa-solid fa-circle-info"></i> Información
+                    <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
+                </a>
+                <div class="nav-dropdown-menu">
+                    <a href="{% url 'academico:mi_progreso' %}" class="nav-dropdown-item">
+                        <i class="fa-solid fa-chart-line"></i> Mi Progreso
+                    </a>
+                </div>
+            </div>
+
             <!-- Menú Administración / Usuarios -->
             {% if user.is_superuser or perms.usuario or perms.usuarios %}
             <div class="nav-dropdown">

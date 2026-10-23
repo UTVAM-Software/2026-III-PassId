@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main-container">
+    
+    <div class="page-header">
+        <div>
+            <h1 class="page-title"><i class="fa-solid fa-chart-line"></i> Mi Progreso</h1>
+            <p class="page-subtitle">Cumplimiento del porcentaje requerido por materia</p>
+        </div>
+        
+        <form method="GET" class="search-bar">
+
+            <select name="periodo" class="search-input">
+                {% for p in periodos_disponibles %}
+                    <option value="{{ p }}" {% if periodo_actual == p %}selected{% endif %}>{{ p }}</option>
+                {% empty %}
+                    <option value="" selected>No hay periodos disponibles</option>
+                {% endfor %}
+            </select>
+            
+            <button type="submit" class="btn-search">
+                <i class="fa-solid fa-filter"></i> Filtrar
+            </button>
+        </form>
+    </div>
+
+    <div class="glass-card messages">
+        <div class="navbar">
+            <div>
+                <div class="page-subtitle">Alumno / Estudiante</div>
+                <div class="page-title">{{ estudiante_nombre }}</div>
+            </div>
+            <div class="badge-active">
+                {{ periodo_actual }}
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        {% for item in progreso_materias %}
+        <div class="glass-card">
+            
+            <div class="navbar">
+                <div>
+                    <h3 class="form-title">{{ item.materia }}</h3>
+                    <span class="badge-perm">[{{ item.codigo }}] Grupo {{ item.grupo }}</span>
+                </div>
+                
+                {% if item.porcentaje < 70 %}
+                    <span class="badge-status badge-inactive">Crítico</span>
+                {% elif item.porcentaje < 85 %}
+                    <span class="badge-status badge-role">Regular</span>
+                {% else %}
+                    <span class="badge-status badge-active">Óptimo</span>
+                {% endif %}
+            </div>
+
+            <div class="navbar">
+                <div class="page-subtitle">
+                    <i class="fa-solid fa-check"></i> Asistencias: 
+                    <strong>{{ item.asistencias }} / {{ item.total_clases }}</strong>
+                </div>
+                <div class="form-title">
+                    {{ item.porcentaje }}%
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <progress value="{{ item.porcentaje }}" max="100" class="form-control"></progress>
+            </div>
+            
+        </div>
+        {% empty %}
+        <div class="glass-card messages">
+            <div class="navbar">
+                <p class="page-subtitle">No se encontraron materias registradas para el periodo seleccionado.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
