@@ -7,15 +7,7 @@ from django.urls import reverse
 
 
 class PassIdPermissionMixin(LoginRequiredMixin):
-    """
-    Control de acceso para vistas basadas en clases.
-
-    - Requiere autenticación.
-    - Valida permisos con formato 'tipo.codename'.
-    - Permite acceso total a superusuarios.
-    - No revela información interna de permisos al usuario.
-    """
-
+    
     required_permission = None
 
     def dispatch(self, request, *args, **kwargs):
