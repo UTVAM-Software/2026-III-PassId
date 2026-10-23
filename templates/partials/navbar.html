@@ -6,26 +6,32 @@
         </a>
 
         {% if user.is_authenticated %}
-        <div class="nav-links">
+        <button class="nav-hamburger" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="nav-links" id="navLinks">
+
             {% if user.is_superuser or perms.asistencia_qr %}
             <div class="nav-dropdown">
-                <a href="javascript:void(0)" class="nav-link">
-                    <i class="fa-solid fa-qrcode"></i> Asistencia QR
-                    <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                </a>
-                <div class="nav-dropdown-menu">
+                <button class="nav-link nav-trigger" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-solid fa-qrcode"></i>
+                    <span class="nav-label">Asistencia QR</span>
+                    <i class="fa-solid fa-chevron-down nav-chevron"></i>
+                </button>
+                <div class="nav-dropdown-menu" role="menu">
                     {% if user.is_superuser or perms.asistencia_qr.ver_mi_qr %}
-                    <a href="{% url 'asistencia_qr:mi_qr' %}" class="nav-dropdown-item">
+                    <a href="{% url 'asistencia_qr:mi_qr' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-id-card"></i> Mi QR
                     </a>
                     {% endif %}
                     {% if user.is_superuser or perms.asistencia_qr.escanear_asistencia %}
-                    <a href="{% url 'asistencia_qr:lector' %}" class="nav-dropdown-item">
+                    <a href="{% url 'asistencia_qr:lector' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-camera"></i> Leer asistencia
                     </a>
                     {% endif %}
                     {% if user.is_superuser or perms.asistencia_qr.ver_asistencias %}
-                    <a href="{% url 'asistencia_qr:asistencia_list' %}" class="nav-dropdown-item">
+                    <a href="{% url 'asistencia_qr:asistencia_list' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-clipboard-check"></i> Asistencias de clase
                     </a>
                     {% endif %}
@@ -34,103 +40,107 @@
             {% endif %}
 
             <div class="nav-dropdown">
-                <a href="javascript:void(0)" class="nav-link">
-                    <i class="fa-solid fa-circle-info"></i> Información
-                    <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                </a>
-                <div class="nav-dropdown-menu">
-                    <a href="{% url 'academico:mi_progreso' %}" class="nav-dropdown-item">
+                <button class="nav-link nav-trigger" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span class="nav-label">Información</span>
+                    <i class="fa-solid fa-chevron-down nav-chevron"></i>
+                </button>
+                <div class="nav-dropdown-menu" role="menu">
+                    <a href="{% url 'academico:mi_progreso' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-chart-line"></i> Mi Progreso
                     </a>
                 </div>
             </div>
 
-            <!-- Menú Administración / Usuarios -->
             {% if user.is_superuser or perms.usuario or perms.usuarios %}
             <div class="nav-dropdown">
-                <a href="javascript:void(0)" class="nav-link">
-                    <i class="fa-solid fa-shield-halved"></i> Administración <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                </a>
-                <div class="nav-dropdown-menu">
-                    <a href="{% url 'usuarios:permiso_list' %}" class="nav-dropdown-item">
+                <button class="nav-link nav-trigger" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span class="nav-label">Administración</span>
+                    <i class="fa-solid fa-chevron-down nav-chevron"></i>
+                </button>
+                <div class="nav-dropdown-menu" role="menu">
+                    <a href="{% url 'usuarios:permiso_list' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-key"></i> Permisos
                     </a>
-                    <a href="{% url 'usuarios:perfil_list' %}" class="nav-dropdown-item">
+                    <a href="{% url 'usuarios:perfil_list' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-user-tag"></i> Perfiles / Roles
                     </a>
-                    <a href="{% url 'usuarios:usuario_list' %}" class="nav-dropdown-item">
+                    <a href="{% url 'usuarios:usuario_list' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-users"></i> Usuarios
                     </a>
                 </div>
             </div>
             {% endif %}
 
-            <!-- Menú Académico -->
             {% if user.is_superuser or perms.carrera or perms.aula or perms.materia or perms.horario or perms.inscripcion or perms.academico %}
             <div class="nav-dropdown">
-                <a href="javascript:void(0)" class="nav-link">
-                    <i class="fa-solid fa-graduation-cap"></i> Académico <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                </a>
-                <div class="nav-dropdown-menu">
-                    <a href="{% url 'academico:carrera_list' %}" class="nav-dropdown-item">
+                <button class="nav-link nav-trigger" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span class="nav-label">Académico</span>
+                    <i class="fa-solid fa-chevron-down nav-chevron"></i>
+                </button>
+                <div class="nav-dropdown-menu" role="menu">
+                    <a href="{% url 'academico:carrera_list' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-certificate"></i> Carreras
                     </a>
-                    <a href="{% url 'academico:aula_list' %}" class="nav-dropdown-item">
+                    <a href="{% url 'academico:aula_list' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-door-open"></i> Aulas
                     </a>
-                    <a href="{% url 'academico:materia_list' %}" class="nav-dropdown-item">
+                    <a href="{% url 'academico:materia_list' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-book"></i> Materias
                     </a>
-                    <a href="{% url 'academico:horario_list' %}" class="nav-dropdown-item">
+                    <a href="{% url 'academico:horario_list' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-calendar-days"></i> Horarios
                     </a>
-                    <a href="{% url 'academico:inscripcion_list' %}" class="nav-dropdown-item">
+                    <a href="{% url 'academico:inscripcion_list' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-user-check"></i> Inscripciones
                     </a>
                 </div>
             </div>
             {% endif %}
 
-            <!-- Menú Eventos -->
             {% if user.is_superuser or perms.evento or perms.registro or perms.asistencia or perms.eventos %}
             <div class="nav-dropdown">
-                <a href="javascript:void(0)" class="nav-link">
-                    <i class="fa-solid fa-calendar-check"></i> Eventos <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                </a>
-                <div class="nav-dropdown-menu">
-                    <a href="{% url 'eventos:evento_list' %}" class="nav-dropdown-item">
+                <button class="nav-link nav-trigger" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span class="nav-label">Eventos</span>
+                    <i class="fa-solid fa-chevron-down nav-chevron"></i>
+                </button>
+                <div class="nav-dropdown-menu" role="menu">
+                    <a href="{% url 'eventos:evento_list' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-bullhorn"></i> Catálogo de Eventos
                     </a>
-                    <a href="{% url 'eventos:registro_list' %}" class="nav-dropdown-item">
+                    <a href="{% url 'eventos:registro_list' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-clipboard-list"></i> Pre-registros
                     </a>
-                    <a href="{% url 'eventos:asistencia_list' %}" class="nav-dropdown-item">
+                    <a href="{% url 'eventos:asistencia_list' %}" class="nav-dropdown-item" role="menuitem">
                         <i class="fa-solid fa-qrcode"></i> Asistencias
                     </a>
                 </div>
             </div>
             {% endif %}
 
-            <!-- Información de Usuario y Logout -->
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-left: 0.5rem;">
-
-                <a href="{% url 'usuarios:cambiar_password' %}" class="nav-user-badge" title="Cambiar Contraseña">
+            {# ── Usuario + Logout ── #}
+            <div class="nav-user-actions">
+                <a href="{% url 'usuarios:cambiar_password' %}" class="nav-icon-btn" title="Cambiar Contraseña">
                     <i class="fa-solid fa-key"></i>
                 </a>
-                
                 <a href="{% url 'usuarios:mi_perfil' %}" class="nav-user-badge" title="Configurar Mi Perfil ({{ user.email }})">
                     <i class="fa-solid fa-user-gear"></i>
-                    {{ user.username }}
+                    <span class="nav-username">{{ user.username }}</span>
                 </a>
-
-                <form method="post" action="{% url 'autenticacion:logout' %}" style="display: inline; margin: 0;">
+                <form method="post" action="{% url 'autenticacion:logout' %}">
                     {% csrf_token %}
                     <button type="submit" class="btn-logout" title="Cerrar sesión">
-                        <i class="fa-solid fa-right-from-bracket"></i> Salir
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="nav-label">Salir</span>
                     </button>
                 </form>
             </div>
-        </div>
+
+        </div>{# /nav-links #}
+
         {% else %}
         <div class="nav-links">
             <a href="{% url 'autenticacion:login' %}" class="nav-link">
