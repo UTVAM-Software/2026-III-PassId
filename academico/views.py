@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-from django.db.models import Q
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView
+from django.db.models import Count, F, Q
 from django.contrib import messages
 from core.mixins import PassIdPermissionMixin
 from .models import Carrera, Aula, Materia, Horario, Inscripcion
@@ -526,4 +526,75 @@ class InscripcionDetailView(PassIdPermissionMixin, DetailView):
         context["list_url"] = reverse_lazy("academico:inscripcion_list")
         context["update_url"] = reverse_lazy("academico:inscripcion_update", kwargs={'pk': self.object.pk})
         return context
-    
+
+class ProgresoAsistenciaView(PassIdPermissionMixin, TemplateView):
+    template_name = "academico/mi_progreso.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        estudiante_id = self.request.user.id
+        periodos_disponibles = list(Inscripcion.objects.filter(
+            usuario_id=estudiante_id,
+            activa=True
+        ).values_list("periodo", flat=True).distinct().order_by("-periodo"))
+        periodo_por_defecto = periodos_disponibles[0] if periodos_disponibles else ""
+        periodo_solicitado = self.request.GET.get("periodo")
+        periodo = (
+            periodo_solicitado
+            if periodo_solicitado in periodos_disponibles
+            else periodo_por_defecto
+        )
+        context['estudiante_nombre'] = getattr(self.request.user, 'nombre', self.request.user.username)
+        context['periodo_actual'] = periodo
+        context['periodos_disponibles'] = periodos_disponibles
+        filtro_asistencias = Q(
+            materia__horarios__asistencias__usuario_id=estudiante_id,
+            materia__horarios__grupo=F("grupo"),
+            materia__horarios__periodo=periodo,
+        )
+        inscripciones = (
+            Inscripcion.objects.filter(
+                usuario_id=estudiante_id,
+                periodo=periodo,
+                activa=True,
+            )
+            .select_related("materia")
+            .annotate(
+                total_clases=Count(
+                    "materia__horarios__asistencias",
+                    filter=filtro_asistencias,
+                ),
+                asistencias_validas=Count(
+                    "materia__horarios__asistencias",
+                    filter=filtro_asistencias
+                    & Q(materia__horarios__asistencias__estado__in=[
+                        "presente",
+                        "retardo",
+                        "justificado",
+                    ]),
+                ),
+            )
+        )
+        progreso_materias = []
+
+        for inscripcion in inscripciones:
+            materia = inscripcion.materia
+            total_clases = inscripcion.total_clases
+            asistencias_validas = inscripcion.asistencias_validas
+            porcentaje = (
+                int((asistencias_validas / total_clases) * 100)
+                if total_clases
+                else 0
+            )
+
+            progreso_materias.append({
+                'materia': materia.nombre,
+                'codigo': materia.clave,
+                'grupo': inscripcion.grupo,
+                'asistencias': asistencias_validas,
+                'total_clases': total_clases,
+                'porcentaje': porcentaje
+            })
+
+        context['progreso_materias'] = progreso_materias
+        return context
