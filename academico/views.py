@@ -6,6 +6,7 @@ from django.contrib import messages
 from core.mixins import PassIdPermissionMixin
 from .models import Carrera, Aula, Materia, Horario, Inscripcion
 from .forms import CarreraForm, AulaForm, MateriaForm, HorarioForm, InscripcionForm
+from django.contrib.auth import get_user_model
 
 
 # ==============================================================================
@@ -598,4 +599,123 @@ class ProgresoAsistenciaView(PassIdPermissionMixin, TemplateView):
             })
 
         context['progreso_materias'] = progreso_materias
+        return context
+
+class CargaAcademicaView(PassIdPermissionMixin, TemplateView):
+    template_name = "academico/carga_academica.html"
+    required_permission = "horario.view_carga_academica"
+
+    DIAS_SEMANA = [
+        ("lunes", "Lunes"),
+        ("martes", "Martes"),
+        ("miercoles", "Miércoles"),
+        ("jueves", "Jueves"),
+        ("viernes", "Viernes"),
+        ("sabado", "Sábado"),
+    ]
+
+    def dispatch(self, request, *args, **kwargs):
+        self.es_admin_horarios = (
+            request.user.is_authenticated
+            and (
+                request.user.is_superuser
+                or request.user.has_perm("horario.*")
+            )
+        )
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        usuario = self.request.user
+
+        periodo = self.request.GET.get("periodo", "2026-1").strip()
+        periodo = periodo or "2026-1"
+
+        profesor_id = usuario.pk
+
+        if self.es_admin_horarios:
+            profesor_id_solicitado = self.request.GET.get(
+                "profesor_id", ""
+            ).strip()
+
+            if profesor_id_solicitado.isdigit():
+                profesor_id = int(profesor_id_solicitado)
+
+        Usuario = get_user_model()
+
+        profesor = Usuario.objects.filter(pk=profesor_id).first()
+
+        if profesor is None:
+            profesor = usuario
+            profesor_id = usuario.pk
+
+        horarios = list(
+            Horario.objects.filter(
+                profesor_id=profesor_id,
+                periodo=periodo,
+                activo=True,
+            )
+            .select_related("materia", "aula", "profesor")
+            .order_by("dia_semana", "hora_inicio")
+        )
+
+        horarios_por_dia = {
+            dia: [] for dia, _ in self.DIAS_SEMANA
+        }
+
+        minutos_totales = 0
+
+        for horario in horarios:
+            horarios_por_dia.setdefault(
+                horario.dia_semana, []
+            ).append(horario)
+
+            inicio = (
+                horario.hora_inicio.hour * 60
+                + horario.hora_inicio.minute
+            )
+
+            fin = (
+                horario.hora_fin.hour * 60
+                + horario.hora_fin.minute
+            )
+
+            minutos_totales += max(fin - inicio, 0)
+
+        nombre_profesor = " ".join(
+            parte
+            for parte in [
+                getattr(profesor, "nombre", ""),
+                getattr(profesor, "apaterno", ""),
+                getattr(profesor, "amaterno", ""),
+            ]
+            if parte
+        ).strip() or profesor.username
+
+        dias_con_horarios = [
+            {
+                "clave": dia,
+                "nombre": nombre,
+                "horarios": horarios_por_dia[dia],
+            }
+            for dia, nombre in self.DIAS_SEMANA
+        ]
+
+        context.update({
+            "periodo": periodo,
+            "profesor_seleccionado": profesor,
+            "profesor_nombre": nombre_profesor,
+            "dias_con_horarios": dias_con_horarios,
+            "hay_horarios": bool(horarios),
+            "horas_totales": minutos_totales // 60,
+            "minutos_totales": minutos_totales % 60,
+            "es_admin_horarios": self.es_admin_horarios,
+        })
+
+        if self.es_admin_horarios:
+            context["profesores"] = (
+                Usuario.objects.filter(activo=True)
+                .order_by("nombre", "apaterno", "username")
+            )
+
         return context
