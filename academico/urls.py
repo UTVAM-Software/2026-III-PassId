@@ -6,7 +6,8 @@ from .views import (
     HorarioListView, HorarioCreateView, HorarioUpdateView, HorarioDeleteView,
     InscripcionListView, InscripcionCreateView, InscripcionUpdateView, 
     InscripcionDeleteView, InscripcionDetailView, CarreraDetailView, 
-    AulaDetailView, MateriaDetailView, HorarioDetailView, ProgresoAsistenciaView
+    AulaDetailView, MateriaDetailView, HorarioDetailView, ProgresoAsistenciaView,
+    CargaAcademicaView
 )
 
 app_name = "academico"
@@ -47,4 +48,7 @@ urlpatterns = [
     path("inscripciones/<int:pk>/eliminar/", InscripcionDeleteView.as_view(), name="inscripcion_delete"),
     path("inscripciones/<int:pk>/detalles/", InscripcionDetailView.as_view(), name="inscripcion_detail"),
     path("mi-progreso/", ProgresoAsistenciaView.as_view(), name="mi_progreso"),
+
+     path("carga-academica/",CargaAcademicaView.as_view(), name="carga_academica",
+    ),
 ]
