@@ -310,8 +310,7 @@ class MateriaDetailView(PassIdPermissionMixin, DetailView):
         context["update_url"] = reverse_lazy("academico:materia_update", kwargs={'pk': self.object.pk})
         return context
 
- 
-# VISTAS DE HORARIO 
+
 class HorarioListView(PassIdPermissionMixin, ListView):
     model = Horario
     template_name = "academico/horario_list.html"
