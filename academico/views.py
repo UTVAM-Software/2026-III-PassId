@@ -9,9 +9,7 @@ from .forms import CarreraForm, AulaForm, MateriaForm, HorarioForm, InscripcionF
 from django.contrib.auth import get_user_model
 
 
-# ==============================================================================
-# VISTAS DE CARRERA
-# ==============================================================================
+
 class CarreraListView(PassIdPermissionMixin, ListView):
     model = Carrera
     template_name = "academico/carrera_list.html"
@@ -110,10 +108,6 @@ class CarreraDetailView(PassIdPermissionMixin, DetailView):
         context["materias"] = self.object.materias.all()
         return context
 
-
-# ==============================================================================
-# VISTAS DE AULA
-# ==============================================================================
 class AulaListView(PassIdPermissionMixin, ListView):
     model = Aula
     template_name = "academico/aula_list.html"
@@ -215,9 +209,7 @@ class AulaDetailView(PassIdPermissionMixin, DetailView):
         return context 
 
 
-# ==============================================================================
-# VISTAS DE MATERIA
-# ==============================================================================
+# VISTAS DE MATERIA 
 class MateriaListView(PassIdPermissionMixin, ListView):
     model = Materia
     template_name = "academico/materia_list.html"
@@ -318,10 +310,8 @@ class MateriaDetailView(PassIdPermissionMixin, DetailView):
         context["update_url"] = reverse_lazy("academico:materia_update", kwargs={'pk': self.object.pk})
         return context
 
-
-# ==============================================================================
-# VISTAS DE HORARIO
-# ==============================================================================
+ 
+# VISTAS DE HORARIO 
 class HorarioListView(PassIdPermissionMixin, ListView):
     model = Horario
     template_name = "academico/horario_list.html"
@@ -421,12 +411,8 @@ class HorarioDetailView(PassIdPermissionMixin, DetailView):
         context["page_title"] = "Detalles del Horario"
         context["list_url"] = reverse_lazy("academico:horario_list")
         context["update_url"] = reverse_lazy("academico:horario_update", kwargs={'pk': self.object.pk})
-        return context    
 
-
-# ==============================================================================
-# VISTAS DE INSCRIPCIÓN
-# ==============================================================================
+ 
 class InscripcionListView(PassIdPermissionMixin, ListView):
     model = Inscripcion
     template_name = "academico/inscripcion_list.html"

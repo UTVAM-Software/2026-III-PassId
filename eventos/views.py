@@ -8,9 +8,6 @@ from .models import Evento, Registro, Asistencia
 from .forms import EventoForm, RegistroEventoForm, AsistenciaEventoForm
 
 
-# ==============================================================================
-# VISTAS DE EVENTO
-# ==============================================================================
 class EventoListView(PassIdPermissionMixin, ListView):
     model = Evento
     template_name = "eventos/evento_list.html"
@@ -98,10 +95,6 @@ class EventoDeleteView(PassIdPermissionMixin, DeleteView):
         context["cancel_url"] = reverse_lazy("eventos:evento_list")
         return context
 
-
-# ==============================================================================
-# VISTAS DE PRE-REGISTRO A EVENTO
-# ==============================================================================
 class RegistroListView(PassIdPermissionMixin, ListView):
     model = Registro
     template_name = "eventos/registro_list.html"
@@ -190,9 +183,6 @@ class RegistroDeleteView(PassIdPermissionMixin, DeleteView):
         return context
 
 
-# ==============================================================================
-# VISTAS DE ASISTENCIA A EVENTO
-# ==============================================================================
 class AsistenciaListView(PassIdPermissionMixin, ListView):
     model = Asistencia
     template_name = "eventos/asistencia_list.html"
