@@ -209,7 +209,7 @@ class AulaDetailView(PassIdPermissionMixin, DetailView):
         return context 
 
 
-# VISTAS DE MATERIA 
+
 class MateriaListView(PassIdPermissionMixin, ListView):
     model = Materia
     template_name = "academico/materia_list.html"
