@@ -410,6 +410,7 @@ class HorarioDetailView(PassIdPermissionMixin, DetailView):
         context["page_title"] = "Detalles del Horario"
         context["list_url"] = reverse_lazy("academico:horario_list")
         context["update_url"] = reverse_lazy("academico:horario_update", kwargs={'pk': self.object.pk})
+        return context    
 
  
 class InscripcionListView(PassIdPermissionMixin, ListView):
